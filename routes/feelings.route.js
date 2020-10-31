@@ -1,15 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const feelingRouter = express.Router();
 const Feeling = require('../models/Feeling.model');
+const mongoose = require("mongoose");
+
+/*
+router.get('/all_feelings', function(req,res){
+    res.send({type:'GET'});
+})
+
+*/
 
 
-
-
-
-feelingRouter.route('/all_feelings').get((req, res) => {
+router.get('/', (req, res) => {
     Feeling.find()
-    .populate('sensation')
     .then(allTheFeelings => {
         res.json(allTheFeelings);
     })
@@ -19,12 +22,11 @@ feelingRouter.route('/all_feelings').get((req, res) => {
 });
 
 
-feelingRouter.post('/all_feelings', (req, res, next) => {
+router.post('/', (req, res, next) => {
     const {title,description } = req.body;
     Feeling.create({
         title,
         description,
-        sensation: []
     })
     .then(response => {
         res.json(response);
@@ -35,23 +37,22 @@ feelingRouter.post('/all_feelings', (req, res, next) => {
 })
 
 
-feelingRouter.route('/all_feelings/:id').get((req, res) => {
+router.get('/:id', (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
     }
 
     Feeling.findById(req.params.id)
-        .populate('new')
         .then(feeling => {
-            res.status(200).json(project);
+            res.status(200).json(feeling);
         })
         .catch(error => {
             res.json(error);
         });
 });
 
-feelingRouter.route('/all_feelings/:id').put, ((req, res, next) => {
+router.put('/:id', (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
@@ -66,13 +67,13 @@ feelingRouter.route('/all_feelings/:id').put, ((req, res, next) => {
         });
 });
 
-feelingRouter.route('/all_feelings/:id').delete, ((req, res, next) => {
+router.delete('/:id', (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
     }
 
-    Feeling.findByIdAndRemove(req.params.id)
+    Feeling.findByIdAndDelete(req.params.id)
         .then(() => {
             res.json({message: `Feeling with ${req.params.id} is removed successfuly.`});
         })
@@ -80,9 +81,6 @@ feelingRouter.route('/all_feelings/:id').delete, ((req, res, next) => {
             res.json(error);
         });
 });
-
-
-
 
 
 module.exports = router;

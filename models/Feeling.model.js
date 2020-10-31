@@ -1,14 +1,14 @@
-const { Schema, model } = require('mongoose');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const feelingSchema = new Schema({
+        user: {type: Schema.Types.ObjectId, ref:"User" },
         title: {
             type: String,
-            unique: true,
         },
         description: { 
             type:String,
-        },
-        sensation: [{ type : Schema.Types.ObjectId, ref: 'New'}]
+        }
     },{
         timestamps:{
             createdAt: "create_at",
@@ -16,5 +16,5 @@ const feelingSchema = new Schema({
         },
 });
 
-const Feeling = model('Feeling', feelingSchema);
+const Feeling = mongoose.model('Feeling', feelingSchema);
 module.exports = Feeling;

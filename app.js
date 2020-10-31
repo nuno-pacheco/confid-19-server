@@ -11,7 +11,6 @@ require("./config/db.config");
 //Router definition
 const userRouter = require("./routes/user.route");
 const feelingRouter = require("./routes/feelings.route");
-const sensationRouter = require("./routes/sensation.route");
 
 
 require("./config/db.config");
@@ -36,7 +35,7 @@ app.use(cookieParser());
 
 app.use("/user", userRouter);
 app.use("/all_feelings", feelingRouter);
-app.use("/sensations", sensationRouter);
+
 
 
 module.exports = app;

@@ -17,7 +17,8 @@ router.post("/signup", (req, res, next) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
-    res.status(200).json({
+    console.log("Nothing is filled")
+    res.status(400).json({
       errorMessage:
         "All fields are mandatory. Please provide your username, email and password.",
     });
@@ -27,8 +28,10 @@ router.post("/signup", (req, res, next) => {
   // make sure passwords are strong:
 
   const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+
   if (!regex.test(password)) {
-    res.status(200).json({
+    console.log("WEAK PASS")
+    res.status(400).json({
       errorMessage:
         "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter.",
     });
@@ -59,9 +62,10 @@ router.post("/signup", (req, res, next) => {
     })
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
-        res.status(200).json({ errorMessage: error.message });
+        res.status(400).json({ errorMessage: error.message });
       } else if (error.code === 11000) {
-        res.status(200).json({
+        console.log("UNIQUE")
+        res.status(400).json({
           errorMessage:
             "Email need to be unique. Email is already used.",
         });
@@ -125,7 +129,7 @@ router.get("/session/:accessToken", (req, res) => {
   const { accessToken } = req.params;
   Session.findById({ _id: accessToken }).populate("userId").then((session) => {
     if (!session) {
-      res.status(200).json({
+      res.status(404).json({
         errorMessage: "Session does not exist",
       });
     } else {

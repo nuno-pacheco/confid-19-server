@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
 
 
 router.post('/', (req, res, next) => {
-    const {title,description } = req.body;
+    const { title,description } = req.body;
     Feeling.create({
         title,
         description,

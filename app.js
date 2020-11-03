@@ -17,7 +17,7 @@ require("./config/db.config");
 
 const app = express();
 
-//CORS middleware configuration
+//CORS middleware 
 app.use(
   cors({
     credentials: true,

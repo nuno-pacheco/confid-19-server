@@ -12,7 +12,7 @@ router.get('/all_feelings', function(req,res){
 
 
 router.get('/', (req, res) => {
-    Feeling.find()
+    Feeling.findById()
     .then(allTheFeelings => {
         res.json(allTheFeelings);
     })
